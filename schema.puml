@@ -1,0 +1,51 @@
+@startuml
+
+interface State {
+    -someNumber: number
+    -someString: string
+}
+
+interface Memento {
+    +restore()
+}
+
+class Originator {
+    -someNumber: number
+    -someString: string
+    __
+    +createSnapshot(): Memento
+    ..
+    +setNumber(number)
+    +setString(string)
+    +print()
+}
+
+interface Backupable {
+    +createSnapshot(): Memento
+}
+
+class Snapshot {
+    -originator
+    -state
+    +restore()
+}
+
+class Command {
+    -originator
+    -history: Memento[]
+    __
+    +save()
+    +restore()
+    ..
+    -print()
+}
+
+Originator ..> Backupable
+
+Snapshot ..> Memento
+Snapshot o--> State
+Snapshot o--> Originator
+Command o---> Originator
+Command o--> Memento
+
+@enduml
